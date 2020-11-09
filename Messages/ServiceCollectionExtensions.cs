@@ -1,5 +1,4 @@
-﻿using MessagingPOC;
-using MessagingPOC.Messages;
+﻿using MessagingPOC.Messages;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

@@ -1,7 +1,5 @@
-﻿using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using MessagingPOC.Dto;
+﻿using MessagingPOC.Dto;
 using MessagingPOC.Messages;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
