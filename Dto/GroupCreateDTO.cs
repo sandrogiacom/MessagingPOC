@@ -18,9 +18,9 @@ namespace MessagingPOC.Dto
         public string Description { get; set; }
         [JsonPropertyName("lastAdChangeMillis")]
         public long LastAdChangeMillis { get; set; }
-        [JsonPropertyName("groupScope")]
+        [JsonPropertyName("adGroupScope")]
         public string GroupScope { get; set; }
-        [JsonPropertyName("groupType")]
+        [JsonPropertyName("adGroupType")]
         public string GroupType { get; set; }
     }
 }

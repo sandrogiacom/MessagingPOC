@@ -2,7 +2,7 @@
 {
     public enum GroupTypeEnum
     {
-        DISTRIBUITION,
-        SECURITY
+        SECURITY,
+        DISTRIBUTION
     }
 }
