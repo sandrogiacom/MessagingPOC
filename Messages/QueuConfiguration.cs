@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MessagingPOC.Dto;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
 using Tnf.Bus.Queue;
@@ -30,18 +31,18 @@ namespace MessagingPOC.Messages
         {
             var groupCreatedEventTopicToPublish = TopicSetup.Builder
     .New(s =>
-            s.Message<GroupCreateEvent>()
-            .AddKey("CreateGroup.Message"));
+            s.Message<BrokerMessage>()
+            .AddKey(BrokerConstants.IDM_AD_SYNC_QUEUE_SYNC));
 
 
             var queue = QueueSetup.Builder
    .New(s => s
-        .QueueName("MessagingQueue")
+        .QueueName(BrokerConstants.IDM_AD_SYNC_QUEUE_SYNC)
         .Reliability(r => r
             .AutoAck(false)
             .AutoDeleteQueue(true)
             .MaxMessageSize(256)
-            .PersistMessage(false))
+            .PersistMessage(true))
         .QoS(q => q
             .PrefetchGlobalLimit(true)
             .PrefetchLimit(100)
@@ -52,11 +53,11 @@ namespace MessagingPOC.Messages
             var exchangeRouter = ExchangeRouter
                 .Builder
                 .Factory()
-                .Name("MessagingExchange")
+                .Name(BrokerConstants.IDM_AD_SYNC_TOPIC)
                 .ServerAddress("192.168.0.29")
                 .Type(ExchangeType.topic)
                 .QueueChannel(QueueChannel.Amqp)
-                .Reliability(isDurable: false, isAutoDelete: false, isPersistent: true)
+                .Reliability(isDurable: true, isAutoDelete: false, isPersistent: true)
                 .AddQueue(queue)
                 .SetExclusive(false)
                 .AutomaticRecovery(

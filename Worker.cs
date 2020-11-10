@@ -19,25 +19,29 @@ namespace MessagingPOC
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            GroupCreateDTO GroupCreate = new GroupCreateDTO();
-            GroupCreate.ObjectGuid = "2332323232";
-            GroupCreate.SamAccountName = "Group SamAccountName";
-            GroupCreate.DisplayName = "Group DisplayName";
-            GroupCreate.Name = "Group Name";
-            GroupCreate.Description = "Group Description";
-            GroupCreate.GroupScope = GroupScopeEnum.DOMAIN.ToString();
-            GroupCreate.GroupType = GroupTypeEnum.DISTRIBUITION.ToString();
+            GroupCreateDTO groupCreate = new GroupCreateDTO();
+            groupCreate.ObjectGuid = "2332323232";
+            groupCreate.SamAccountName = "Group SamAccountName";
+            groupCreate.DisplayName = "Group DisplayName";
+            groupCreate.Name = "Group Name";
+            groupCreate.Description = "Group Description";
+            groupCreate.GroupScope = GroupScopeEnum.DOMAIN.ToString();
+            groupCreate.GroupType = GroupTypeEnum.DISTRIBUITION.ToString();
 
+            SyncEventDTO body = new SyncEventDTO();
+            body.activeDirectoryId = "5c11b84a4e9b467d84356761448a997e";
+            body.type = "GROUP_CREATE";
+            body.message = groupCreate;
 
             Console.WriteLine("ExecuteAsync ... ");
 
-            GroupCreateEvent groupCreateEvent = new GroupCreateEvent(GroupCreate);
-            await _notifierService.Notify(groupCreateEvent);
+            BrokerHeader header = new BrokerHeader();
+            header.Tenant = "12345";
+            header.User = "3333";
 
-            while(!stoppingToken.IsCancellationRequested)
-            {
-                await Task.Delay(5000, stoppingToken);
-            }
+            BrokerMessage message = new BrokerMessage(header, body);
+
+            await _notifierService.Notify(message);
 
         }
     }
